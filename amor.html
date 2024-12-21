@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal CV</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #1e1e1e;
+            color: #00ff00;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #terminal {
+            background: #000;
+            width: 80%;
+            max-width: 800px;
+            height: 500px;
+            border: 2px solid #00ff00;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        #input-line {
+            display: flex;
+            align-items: center;
+        }
+        #input-line span {
+            margin-right: 5px;
+        }
+        #command-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #00ff00;
+            font-size: 1em;
+        }
+        #command-input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal">
+        <div id="output"></div>
+        <div id="input-line">
+            <span>&gt;</span>
+            <input type="text" id="command-input" placeholder="Enter a command...">
+        </div>
+    </div>
+    <script>
+        const output = document.getElementById('output');
+        const commandInput = document.getElementById('command-input');
+
+        const data = {
+            profile: `Antonio Oyuela\nTécnico Informático\nExperto en informática con experiencia en desarrollo web\ny soporte técnico.`,
+            experience: `- Brindar soporte remoto a clientes (2019-2020)\n- Diagnosticar y solucionar problemas técnicos\n- Configurar productos y servicios\n- Excelente atención al cliente.`,
+            skills: `Lenguajes: HTML, CSS, JavaScript, React, Astro, Angular\nSistemas: Linux, Windows, Mac\nHerramientas: Hirent's Boot CD, Active Directory, Paquete Adobe.`,
+            education: `- GM Sistemas Microinformáticos y Redes (2009-2020)\n- Montaje y Reparación de Microsistemas | Nivel 2 (2018-2019)\n- Curso de Ciberseguridad | 300 Horas (2023).`
+        };
+
+        const commands = {
+            'show profile': () => print(data.profile),
+            'show experience': () => print(data.experience),
+            'show skills': () => print(data.skills),
+            'show education': () => print(data.education),
+            help: () => print(`Available commands:\n- show profile\n- show experience\n- show skills\n- show education\n- clear\n- help`),
+            clear: () => (output.innerHTML = ''),
+        };
+
+        function print(text) {
+            const lines = text.split('\n');
+            lines.forEach(line => {
+                const div = document.createElement('div');
+                div.textContent = line;
+                output.appendChild(div);
+            });
+            output.scrollTop = output.scrollHeight;
+        }
+
+        commandInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = commandInput.value.trim();
+                commandInput.value = '';
+
+                if (commands[command]) {
+                    commands[command]();
+                } else {
+                    print(`Command not recognized: ${command}\nType 'help' for a list of commands.`);
+                }
+            }
+        });
+
+        // Welcome message
+        print(`Welcome to Antonio Oyuela's CV Terminal!\nType 'help' to see available commands.`);
+    </script>
+</body>
+</html>
